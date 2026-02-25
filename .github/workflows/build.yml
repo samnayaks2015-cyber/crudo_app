@@ -3,24 +3,29 @@ name: Build APK
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
 
-      - - run: |
-    cd flutter_app/flutter_app
-    flutter pub get
-    flutter build apk --release
+      - name: Install dependencies & build APK
+        run: |
+          cd flutter_app/flutter_app
+          flutter pub get
+          flutter build apk --release
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: crudo-apk
           path: flutter_app/flutter_app/build/app/outputs/flutter-apk/app-release.apk
