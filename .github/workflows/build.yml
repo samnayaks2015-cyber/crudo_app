@@ -2,7 +2,8 @@ name: Build APK
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -11,21 +12,17 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
+          channel: 'stable'
 
-      - name: Debug folder structure
+      - name: Install dependencies & build APK
         run: |
-          echo "Listing files..."
-          ls -R
-
-      - name: Build APK
-        working-directory: flutter_app/flutter_app
-        run: |
+          cd flutter_app/flutter_app
           flutter pub get
           flutter build apk --release
 
