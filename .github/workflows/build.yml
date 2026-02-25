@@ -11,16 +11,21 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
 
-      - name: Install dependencies & build APK
+      - name: Debug folder structure
         run: |
-          cd flutter_app/flutter_app
+          echo "Listing files..."
+          ls -R
+
+      - name: Build APK
+        working-directory: flutter_app/flutter_app
+        run: |
           flutter pub get
           flutter build apk --release
 
