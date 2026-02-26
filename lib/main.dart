@@ -18,13 +18,13 @@ class CrudoApp extends StatelessWidget {
       create: (_) => CartService(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'CRUDO',
+        title: 'Crudo',
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
         home: const HomeScreen(),
         routes: {
-          CartScreen.routeName: (_) => const CartScreen(),
+          '/cart': (_) => const CartScreen(),
         },
       ),
     );
