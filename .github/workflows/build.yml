@@ -4,48 +4,49 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repo
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      # 2️⃣ Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
-          channel: 'stable'
+          flutter-version: "3.22.0"
 
-      # 3️⃣ Verify project name
+      - name: Flutter doctor
+        run: flutter doctor
+
+      # ✅ Ensure valid project name (VERY IMPORTANT)
       - name: Ensure valid project
         run: |
           echo "Project name check..."
-          grep "name: crudo_app" pubspec.yaml
+          if grep -q "name: crudo_app" pubspec.yaml; then
+            echo "Project name OK"
+          else
+            echo "Invalid project name. Fix pubspec.yaml"
+            exit 1
+          fi
 
-      # 4️⃣ Create Android folders if missing
+      # ✅ Create Android folder if missing
       - name: Create Android folders
         run: |
           if [ ! -d "android" ]; then
-            flutter create --project-name crudo_app .
+            flutter create .
           fi
 
-      # 5️⃣ Get dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # 6️⃣ Build APK
       - name: Build APK
         run: flutter build apk --release
 
-      # 7️⃣ Upload APK
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: crudo-apk
+          name: app-release
           path: build/app/outputs/flutter-apk/app-release.apk
