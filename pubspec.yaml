@@ -1,7 +1,6 @@
 name: crudo_app
 description: CRUDO Customer App
-
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -12,15 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6
-  provider: ^6.0.5
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  flutter_lints: ^3.0.0
-  flutter_launcher_icons: ^0.13.1
+  cupertino_icons: ^1.0.2
+  provider: ^6.1.2
 
 flutter:
   uses-material-design: true
@@ -28,10 +20,3 @@ flutter:
   assets:
     - assets/logo.png
     - assets/splash.png
-
-flutter_launcher_icons:
-  android: true
-  ios: false
-  image_path: assets/logo.png
-  adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: assets/logo.png
