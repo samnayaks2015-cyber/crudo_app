@@ -15,34 +15,58 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('CRUDO'),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, CartScreen.routeName);
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const CartScreen(),
+                ),
+              );
             },
-            child: Text(
-              'Cart: ${cart.itemCount}',
-              style: const TextStyle(color: Colors.white),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Center(
+                child: Text(
+                  'Cart: ${cart.count}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
             ),
           ),
         ],
       ),
       body: ListView(
         children: [
-          _tile(context, 'Cow Milk', 90),
-          _tile(context, 'Buffalo Milk', 130),
+          _productTile(
+            context,
+            name: 'Cow Milk',
+            price: 90,
+          ),
+          _productTile(
+            context,
+            name: 'Buffalo Milk',
+            price: 130,
+          ),
         ],
       ),
     );
   }
 
-  Widget _tile(BuildContext context, String name, double price) {
+  Widget _productTile(
+    BuildContext context, {
+    required String name,
+    required double price,
+  }) {
     final cart = Provider.of<CartService>(context, listen: false);
 
     return ListTile(
       title: Text(name),
-      subtitle: Text('₹$price'),
+      subtitle: Text('₹${price.toStringAsFixed(1)}'),
       trailing: ElevatedButton(
-        onPressed: () => cart.addItem(name, price),
+        onPressed: () {
+          cart.addItem(name, price);
+        },
         child: const Text('Add'),
       ),
     );
