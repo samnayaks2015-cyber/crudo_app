@@ -21,7 +21,6 @@ class CrudoApp extends StatelessWidget {
         title: 'CRUDO',
         theme: ThemeData(
           primarySwatch: Colors.green,
-          scaffoldBackgroundColor: const Color(0xFFF5F5F5),
         ),
         home: const HomeScreen(),
         routes: {
