@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const CrudoApp());
@@ -19,6 +19,7 @@ class CrudoApp extends StatelessWidget {
   }
 }
 
+// ✅ SPLASH SCREEN
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        MaterialPageRoute(builder: (_) => const HomePage()),
       );
     });
   }
@@ -52,19 +53,20 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+// ✅ HOME PAGE
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CRUDO"),
+        title: const Text('CRUDO'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          "Fresh Milk Delivery",
+          'Welcome to CRUDO',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
