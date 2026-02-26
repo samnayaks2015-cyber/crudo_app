@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,121 +11,158 @@ class CrudoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'CRUDO',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
-        fontFamily: 'Roboto',
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
 
+//
+// ✅ SPLASH SCREEN
+//
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Image.asset(
+          'assets/splash.png',
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+}
+
+//
+// ✅ HOME SCREEN
+//
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff5f7fa),
       appBar: AppBar(
         title: const Text('CRUDO'),
         centerTitle: true,
-        elevation: 0,
+        backgroundColor: Colors.green,
       ),
       body: Column(
         children: [
-          // 🔶 LOGO HEADER
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            color: Colors.green.shade50,
-            child: Column(
-              children: [
-                Image.asset(
-                  'assets/logo.png',
-                  height: 80,
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Fresh Milk Delivery',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
-              ],
+            padding: const EdgeInsets.all(16),
+            color: Colors.green.shade100,
+            child: const Text(
+              'Fresh Milk Delivery',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
 
-          // 🔶 PRODUCT LIST
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: const [
-                ProductCard(
-                  name: 'Cow Milk',
-                  price: '₹90 / litre',
-                  icon: Icons.local_drink,
-                ),
-                ProductCard(
-                  name: 'Buffalo Milk',
-                  price: '₹130 / litre',
-                  icon: Icons.local_drink,
-                ),
-                ProductCard(
-                  name: 'Fresh Curd',
-                  price: '₹60 / kg',
-                  icon: Icons.icecream,
-                ),
-              ],
-            ),
+          const SizedBox(height: 20),
+
+          productCard(
+            title: 'Cow Milk',
+            price: '₹90 / litre',
+          ),
+
+          productCard(
+            title: 'Buffalo Milk',
+            price: '₹130 / litre',
+          ),
+
+          productCard(
+            title: 'Fresh Curd',
+            price: '₹60 / kg',
           ),
         ],
       ),
     );
   }
-}
 
-class ProductCard extends StatelessWidget {
-  final String name;
-  final String price;
-  final IconData icon;
-
-  const ProductCard({
-    super.key,
-    required this.name,
-    required this.price,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+  Widget productCard({
+    required String title,
+    required String price,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 8,
+            color: Colors.black12,
+          )
+        ],
       ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
-        leading: CircleAvatar(
-          backgroundColor: Colors.green.shade100,
-          child: Icon(icon, color: Colors.green),
-        ),
-        title: Text(
-          name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(price),
-        trailing: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 26,
+            backgroundColor: Colors.green.shade100,
+            child: const Icon(Icons.local_drink, color: Colors.green),
           ),
-          onPressed: () {},
-          child: const Text('Buy'),
-        ),
+
+          const SizedBox(width: 16),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(price),
+              ],
+            ),
+          ),
+
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: const Text('Buy'),
+          )
+        ],
       ),
     );
   }
