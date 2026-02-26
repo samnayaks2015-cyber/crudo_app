@@ -6,137 +6,202 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF7F9FB),
       appBar: AppBar(
-        elevation: 0,
+        title: const Text(
+          'CRUDO',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
         backgroundColor: Colors.green,
-        title: const Text("CRUDO"),
         centerTitle: true,
+        elevation: 0,
       ),
-      body: ListView(
+
+      // ❗ NO bottomNavigationBar here
+
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
-          // 🔍 Search
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Search milk, fruits, vegetables...",
-              prefixIcon: const Icon(Icons.search),
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            // 🔍 Search Bar
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: 55,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide.none,
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.search, color: Colors.grey),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'Search milk, fruits, vegetables...',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
 
-          const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-          // 🧭 Categories
-          const Text(
-            "Categories",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+            // 🧩 Categories Title
+            const Text(
+              'Categories',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              _CategoryItem("Milk", Icons.local_drink),
-              _CategoryItem("Vegetables", Icons.eco),
-              _CategoryItem("Fruits", Icons.apple),
-              _CategoryItem("Eggs", Icons.egg),
-            ],
-          ),
+            // 🧩 Categories Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                CategoryItem(Icons.local_drink, 'Milk'),
+                CategoryItem(Icons.eco, 'Vegetables'),
+                CategoryItem(Icons.apple, 'Fruits'),
+                CategoryItem(Icons.egg, 'Eggs'),
+              ],
+            ),
 
-          const SizedBox(height: 24),
+            const SizedBox(height: 28),
 
-          const Text(
-            "Popular",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+            // ⭐ Popular Title
+            const Text(
+              'Popular',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
-          const _ProductCard("Cow Milk", "₹90 / litre"),
-          const _ProductCard("Buffalo Milk", "₹130 / litre"),
-        ],
+            // 🛒 Product Cards
+            const ProductCard(
+              name: 'Cow Milk',
+              price: '₹90 / litre',
+            ),
+
+            const SizedBox(height: 14),
+
+            const ProductCard(
+              name: 'Buffalo Milk',
+              price: '₹130 / litre',
+            ),
+          ],
+        ),
       ),
-      bottomNavigationBar: const _BottomNav(),
     );
   }
 }
 
-class _CategoryItem extends StatelessWidget {
-  final String title;
+//
+// 🧩 CATEGORY WIDGET
+//
+class CategoryItem extends StatelessWidget {
   final IconData icon;
-  const _CategoryItem(this.title, this.icon);
+  final String title;
+
+  const CategoryItem(this.icon, this.title, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 26,
-          backgroundColor: Colors.green.shade100,
-          child: Icon(icon, color: Colors.green),
+        Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            color: Colors.green.withOpacity(0.15),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: Colors.green, size: 30),
         ),
         const SizedBox(height: 6),
-        Text(title, style: const TextStyle(fontSize: 12)),
+        Text(title),
       ],
     );
   }
 }
 
-class _ProductCard extends StatelessWidget {
+//
+// 🛒 PRODUCT CARD
+//
+class ProductCard extends StatelessWidget {
   final String name;
   final String price;
-  const _ProductCard(this.name, this.price);
+
+  const ProductCard({
+    super.key,
+    required this.name,
+    required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: ListTile(
-        leading: const CircleAvatar(
-          backgroundColor: Colors.green,
-          child: Icon(Icons.local_drink, color: Colors.white),
-        ),
-        title: Text(name,
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(price),
-        trailing: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
+      child: Row(
+        children: [
+
+          // 🥛 Icon
+          Container(
+            height: 48,
+            width: 48,
+            decoration: const BoxDecoration(
+              color: Colors.green,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.local_drink, color: Colors.white),
           ),
-          child: const Text("Add"),
-        ),
+
+          const SizedBox(width: 14),
+
+          // 📦 Name + Price
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(price),
+              ],
+            ),
+          ),
+
+          // ➕ Add Button
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: const Text('Add'),
+          ),
+        ],
       ),
-    );
-  }
-}
-
-class _BottomNav extends StatelessWidget {
-  const _BottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
-      type: BottomNavigationBarType.fixed,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(icon: Icon(Icons.grid_view), label: "Categories"),
-        BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
-        BottomNavigationBarItem(icon: Icon(Icons.receipt), label: "Orders"),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-      ],
     );
   }
 }
