@@ -12,13 +12,7 @@ class CartService extends ChangeNotifier {
     if (index >= 0) {
       _items[index].quantity++;
     } else {
-      _items.add(
-        CartItem(
-          name: name,
-          price: price,
-          quantity: 1,
-        ),
-      );
+      _items.add(CartItem(name: name, price: price));
     }
 
     notifyListeners();
@@ -26,6 +20,11 @@ class CartService extends ChangeNotifier {
 
   void removeItem(String name) {
     _items.removeWhere((e) => e.name == name);
+    notifyListeners();
+  }
+
+  void clearCart() {
+    _items.clear();
     notifyListeners();
   }
 
