@@ -23,7 +23,7 @@ flutter:
     - assets/logo.png
     - assets/splash.png
 
-flutter_launcher_icons:
+flutter_icons:
   android: true
   ios: false
   image_path: assets/logo.png
