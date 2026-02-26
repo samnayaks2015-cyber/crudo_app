@@ -18,7 +18,13 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
-      - name: Install dependencies
+      - name: Create Flutter project if missing
+        run: |
+          if [ ! -d "android" ]; then
+            flutter create .
+          fi
+
+      - name: Get dependencies
         run: flutter pub get
 
       - name: Generate launcher icons
@@ -30,5 +36,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: crudo-apk
+          name: app-release
           path: build/app/outputs/flutter-apk/app-release.apk
