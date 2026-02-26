@@ -1,48 +1,56 @@
 import 'package:flutter/material.dart';
-import '../models/cart_item.dart';
+import 'package:provider/provider.dart';
+import '../services/cart_service.dart';
 
-class CartService extends ChangeNotifier {
-  final List<CartItem> _items = [];
+class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
 
-  List<CartItem> get items => _items;
+  @override
+  Widget build(BuildContext context) {
+    final cart = Provider.of<CartService>(context);
 
-  void addItem(String name, double price) {
-    final index = _items.indexWhere((e) => e.name == name);
-
-    if (index >= 0) {
-      _items[index].quantity++;
-    } else {
-      _items.add(CartItem(name: name, price: price));
-    }
-
-    notifyListeners();
-  }
-
-  void removeItem(String name) {
-    _items.removeWhere((e) => e.name == name);
-    notifyListeners();
-  }
-
-  void clearCart() {
-    _items.clear();
-    notifyListeners();
-  }
-
-  // ✅ REQUIRED BY UI
-  int get itemCount {
-    int count = 0;
-    for (var item in _items) {
-      count += item.quantity;
-    }
-    return count;
-  }
-
-  // ✅ REQUIRED BY UI
-  double get totalAmount {
-    double total = 0;
-    for (var item in _items) {
-      total += item.price * item.quantity;
-    }
-    return total;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your Cart'),
+      ),
+      body: cart.items.isEmpty
+          ? const Center(
+              child: Text('Cart is empty'),
+            )
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cart.items.length,
+                    itemBuilder: (context, index) {
+                      final item = cart.items[index];
+                      return ListTile(
+                        title: Text(item.name),
+                        subtitle: Text(
+                          '₹${item.price} x ${item.quantity}',
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            cart.removeItem(item.name);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'Total: ₹${cart.totalAmount.toStringAsFixed(0)}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+    );
   }
 }
