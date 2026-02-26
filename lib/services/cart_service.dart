@@ -6,32 +6,23 @@ class CartService extends ChangeNotifier {
 
   List<CartItem> get items => _items;
 
-  // ➕ add item
   void addItem(String name, double price) {
     final index = _items.indexWhere((e) => e.name == name);
 
     if (index >= 0) {
       _items[index].quantity++;
     } else {
-      _items.add(
-        CartItem(
-          name: name,
-          price: price,
-          quantity: 1,
-        ),
-      );
+      _items.add(CartItem(name: name, price: price));
     }
 
     notifyListeners();
   }
 
-  // ❌ remove item
   void removeItem(String name) {
     _items.removeWhere((e) => e.name == name);
     notifyListeners();
   }
 
-  // 🔢 total count
   int get itemCount {
     int count = 0;
     for (var item in _items) {
@@ -40,7 +31,6 @@ class CartService extends ChangeNotifier {
     return count;
   }
 
-  // 💰 total amount
   double get totalAmount {
     double total = 0;
     for (var item in _items) {
