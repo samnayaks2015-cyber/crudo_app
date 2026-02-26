@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/cart_service.dart';
+import 'cart_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -18,7 +19,12 @@ class HomeScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.shopping_cart),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/cart');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CartScreen(),
+                    ),
+                  );
                 },
               ),
               if (cart.itemCount > 0)
@@ -45,46 +51,26 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: const [
-          ProductTile(name: 'Chicken', price: 220),
-          ProductTile(name: 'Mutton', price: 680),
-          ProductTile(name: 'Fish', price: 300),
-          ProductTile(name: 'Prawns', price: 450),
+        children: [
+          _productTile(context, 'Apple', 120),
+          _productTile(context, 'Banana', 60),
+          _productTile(context, 'Mango', 150),
+          _productTile(context, 'Orange', 80),
         ],
       ),
     );
   }
-}
 
-class ProductTile extends StatelessWidget {
-  final String name;
-  final double price;
-
-  const ProductTile({
-    super.key,
-    required this.name,
-    required this.price,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final cart = Provider.of<CartService>(context, listen: false);
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        title: Text(name),
-        subtitle: Text('₹${price.toStringAsFixed(0)}'),
-        trailing: ElevatedButton(
-          onPressed: () {
-            cart.addItem(name, price);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$name added to cart')),
-            );
-          },
-          child: const Text('Add'),
-        ),
+  Widget _productTile(BuildContext context, String name, double price) {
+    return ListTile(
+      title: Text(name),
+      subtitle: Text('₹$price'),
+      trailing: ElevatedButton(
+        onPressed: () {
+          Provider.of<CartService>(context, listen: false)
+              .addItem(name, price);
+        },
+        child: const Text('Add'),
       ),
     );
   }
