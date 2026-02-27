@@ -1,5 +1,5 @@
 name: crudo_app
-description: A simple shopping cart app
+description: CRUDO milk, fruits and vegetables delivery app
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -10,8 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.6
-  provider: ^6.0.5
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:
