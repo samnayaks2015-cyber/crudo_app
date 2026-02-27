@@ -10,34 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 🐦 Setup Flutter
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.22.0"
-          channel: stable
 
-      # 🔥 IMPORTANT — FIXES YOUR ERROR
-      - name: 🛠️ Create Flutter project if missing
+      # ✅ CLEAN CREATE (THIS FIXES YOUR ERROR)
+      - name: Create fresh Flutter project
         run: |
-          if [ ! -d "android" ]; then
-            flutter create .
-          fi
+          rm -rf android ios
+          flutter create .
 
-      - name: 📦 Get dependencies
+      - name: Get dependencies
         run: flutter pub get
 
-      - name: 🎨 Generate launcher icons (safe)
-        run: |
-          flutter pub run flutter_launcher_icons || true
-
-      - name: 🏗️ Build APK
+      - name: Build APK
         run: flutter build apk --release
 
-      - name: 📤 Upload APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: crudo-apk
+          name: app-release
           path: build/app/outputs/flutter-apk/app-release.apk
