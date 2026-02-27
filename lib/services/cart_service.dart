@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
-import '../models/cart_item.dart';
+
+class CartItem {
+  final String name;
+  final double price;
+  int quantity;
+
+  CartItem({
+    required this.name,
+    required this.price,
+    this.quantity = 1,
+  });
+}
 
 class CartService extends ChangeNotifier {
   final List<CartItem> _items = [];
 
   List<CartItem> get items => _items;
 
-  int get count => _items.length;
-
-  double get totalAmount {
-    double total = 0;
-    for (var item in _items) {
-      total += item.price * item.quantity;
-    }
-    return total;
-  }
-
   void addItem(String name, double price) {
-    final index = _items.indexWhere((e) => e.name == name);
+    final index = _items.indexWhere((item) => item.name == name);
 
     if (index >= 0) {
       _items[index].quantity++;
     } else {
-      _items.add(
-        CartItem(
-          name: name,
-          price: price,
-          quantity: 1,
-        ),
-      );
+      _items.add(CartItem(name: name, price: price));
     }
 
     notifyListeners();
@@ -37,6 +32,13 @@ class CartService extends ChangeNotifier {
   void removeItem(int index) {
     _items.removeAt(index);
     notifyListeners();
+  }
+
+  double get totalPrice {
+    return _items.fold(
+      0,
+      (sum, item) => sum + (item.price * item.quantity),
+    );
   }
 
   void clearCart() {
