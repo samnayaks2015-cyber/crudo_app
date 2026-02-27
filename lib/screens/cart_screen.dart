@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../services/cart_service.dart';
 
 class CartScreen extends StatelessWidget {
+  static const routeName = '/cart';
+
   const CartScreen({super.key});
 
   @override
@@ -11,12 +13,10 @@ class CartScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Cart'),
+        title: const Text('My Cart'),
       ),
       body: cart.items.isEmpty
-          ? const Center(
-              child: Text('Cart is empty'),
-            )
+          ? const Center(child: Text('Cart is empty'))
           : Column(
               children: [
                 Expanded(
@@ -27,26 +27,24 @@ class CartScreen extends StatelessWidget {
                       return ListTile(
                         title: Text(item.name),
                         subtitle: Text(
-                          '₹${item.price} x ${item.quantity}',
-                        ),
+                            '₹${item.price} x ${item.quantity}'),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            cart.removeItem(item.name);
+                            cart.removeItem(index);
                           },
                         ),
                       );
                     },
                   ),
                 ),
-                Container(
+                Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    'Total: ₹${cart.totalAmount.toStringAsFixed(0)}',
+                    'Total: ₹${cart.totalAmount.toStringAsFixed(2)}',
                     style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
