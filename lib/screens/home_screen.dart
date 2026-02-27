@@ -19,12 +19,7 @@ class HomeScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.shopping_cart),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const CartScreen(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, CartScreen.routeName);
                 },
               ),
               if (cart.count > 0)
@@ -37,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       cart.count.toString(),
                       style: const TextStyle(
-                          fontSize: 12, color: Colors.white),
+                          color: Colors.white, fontSize: 12),
                     ),
                   ),
                 ),
@@ -48,9 +43,9 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            cart.addItem('Sample Product', 199);
+            cart.addItem("Sample Product", 99.0);
           },
-          child: const Text('Add Sample Product'),
+          child: const Text("Add Sample Product"),
         ),
       ),
     );
