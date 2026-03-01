@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class CartService extends ChangeNotifier {
+class CartService {
   final List<Map<String, dynamic>> _items = [];
 
   List<Map<String, dynamic>> get items => _items;
@@ -10,16 +8,9 @@ class CartService extends ChangeNotifier {
       'name': name,
       'price': price,
     });
-    notifyListeners();
   }
 
-  void removeItem(int index) {
-    _items.removeAt(index);
-    notifyListeners();
+  void clearCart() {
+    _items.clear();
   }
-
-  double get total =>
-      _items.fold(0, (sum, item) => sum + (item['price'] as double));
-
-  int get count => _items.length;
 }
