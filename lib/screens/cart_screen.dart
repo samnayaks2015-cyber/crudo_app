@@ -10,9 +10,7 @@ class CartScreen extends StatelessWidget {
     final cart = Provider.of<CartService>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Cart'),
-      ),
+      appBar: AppBar(title: const Text('Your Cart')),
       body: cart.items.isEmpty
           ? const Center(child: Text('Cart is empty'))
           : Column(
@@ -22,7 +20,6 @@ class CartScreen extends StatelessWidget {
                     itemCount: cart.items.length,
                     itemBuilder: (context, index) {
                       final item = cart.items[index];
-
                       return ListTile(
                         title: Text(item['name']),
                         subtitle: Text('₹${item['price']}'),
