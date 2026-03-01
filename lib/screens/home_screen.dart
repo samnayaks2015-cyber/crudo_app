@@ -14,37 +14,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Map<String, dynamic>> products = [
     {
-      "name": "Cow Milk",
-      "price": 90.0,
-      "icon": Icons.local_drink,
+      'name': 'Cow Milk',
+      'price': 90.0,
+      'image': 'assets/images/cow_milk.png',
     },
     {
-      "name": "Buffalo Milk",
-      "price": 130.0,
-      "icon": Icons.opacity,
+      'name': 'Buffalo Milk',
+      'price': 130.0,
+      'image': 'assets/images/buffalo_milk.png',
     },
     {
-      "name": "Apple",
-      "price": 120.0,
-      "icon": Icons.apple,
+      'name': 'Apple',
+      'price': 120.0,
+      'image': 'assets/images/apple.png',
     },
     {
-      "name": "Banana",
-      "price": 60.0,
-      "icon": Icons.set_meal,
+      'name': 'Banana',
+      'price': 60.0,
+      'image': 'assets/images/banana.png',
     },
   ];
 
   void addToCart(String name, double price) {
     setState(() {
-      // ✅ IMPORTANT FIX — named parameters
       cart.addItem(name: name, price: price);
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text("$name added to cart"),
-        duration: const Duration(seconds: 1),
+        content: Text('$name added to cart'),
+        backgroundColor: Colors.green,
       ),
     );
   }
@@ -52,59 +51,62 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget productCard(Map<String, dynamic> product) {
     return Container(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
+            color: Colors.black12,
             blurRadius: 10,
-            color: Colors.black.withOpacity(0.08),
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(
-              product["icon"],
-              size: 48,
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Image.asset(
+              product['image'],
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            product['name'],
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '₹${product['price']}',
+            style: const TextStyle(
+              fontSize: 16,
               color: Colors.green,
+              fontWeight: FontWeight.w600,
             ),
-            Text(
-              product["name"],
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            Text(
-              "₹${product["price"]}",
-              style: const TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () =>
-                    addToCart(product["name"], product["price"]),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  "Add",
-                  style: TextStyle(color: Colors.white),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () =>
+                  addToCart(product['name'], product['price']),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
+              child: const Text(
+                'Add',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -112,9 +114,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff5f6fa),
+      backgroundColor: const Color(0xfff5f7fb),
       appBar: AppBar(
-        title: const Text("CRUDO"),
+        title: const Text(
+          'CRUDO',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.green,
         actions: [
           Stack(
@@ -134,14 +139,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 Positioned(
                   right: 6,
                   top: 6,
-                  child: CircleAvatar(
-                    radius: 9,
-                    backgroundColor: Colors.red,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
                     child: Text(
                       cart.items.length.toString(),
                       style: const TextStyle(
-                        fontSize: 11,
                         color: Colors.white,
+                        fontSize: 12,
                       ),
                     ),
                   ),
@@ -150,17 +158,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-
-      // ✅ BODY
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: GridView.builder(
           itemCount: products.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: 0.85,
+            childAspectRatio: 0.75,
           ),
           itemBuilder: (context, index) {
             return productCard(products[index]);
