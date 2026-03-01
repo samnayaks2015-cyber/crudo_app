@@ -1,20 +1,28 @@
 name: crudo_app
-description: Crudo Store App
-publish_to: 'none'
+description: CRUDO Milk Delivery App
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.0.5
+
+  cupertino_icons: ^1.0.6
+  provider: ^6.1.2
+  google_fonts: ^6.2.1
+  badges: ^3.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^3.0.2
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images
