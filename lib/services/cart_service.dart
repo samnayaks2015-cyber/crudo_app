@@ -1,25 +1,59 @@
-import '../models/cart_item.dart';
+import 'package:flutter/material.dart';
 
-class CartService {
-  static final CartService instance = CartService._internal();
+class CartItem {
+  final String name;
+  final double price;
+  int quantity;
 
-  factory CartService() => instance;
+  CartItem({
+    required this.name,
+    required this.price,
+    this.quantity = 1,
+  });
+}
 
-  CartService._internal();
+class CartService extends ChangeNotifier {
+  final Map<String, CartItem> _items = {};
 
-  final List<CartItem> _items = [];
+  Map<String, CartItem> get items => _items;
 
-  List<CartItem> get items => _items;
-
-  void addItem({required String name, required double price}) {
-    try {
-      final existing = _items.firstWhere((e) => e.name == name);
-      existing.quantity++;
-    } catch (e) {
-      _items.add(CartItem(name: name, price: price));
+  // ✅ ADD ITEM
+  void addItem(String name, double price) {
+    if (_items.containsKey(name)) {
+      _items[name]!.quantity++;
+    } else {
+      _items[name] = CartItem(name: name, price: price);
     }
+    notifyListeners();
   }
 
-  double get total =>
-      _items.fold(0, (sum, item) => sum + (item.price * item.quantity));
+  // ✅ REMOVE ITEM
+  void removeItem(String name) {
+    if (!_items.containsKey(name)) return;
+
+    if (_items[name]!.quantity > 1) {
+      _items[name]!.quantity--;
+    } else {
+      _items.remove(name);
+    }
+    notifyListeners();
+  }
+
+  // ✅ TOTAL ITEMS (for badge)
+  int get totalItems {
+    int total = 0;
+    for (var item in _items.values) {
+      total += item.quantity;
+    }
+    return total;
+  }
+
+  // ✅ TOTAL PRICE
+  double get totalPrice {
+    double total = 0;
+    for (var item in _items.values) {
+      total += item.price * item.quantity;
+    }
+    return total;
+  }
 }
