@@ -22,7 +22,41 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff5f6fa),
-
       appBar: AppBar(
-        title: const Text
+        title: const Text('Your Cart'),
+      ),
+      body: cart.items.isEmpty
+          ? const Center(
+              child: Text(
+                'Cart is empty',
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          : ListView.builder(
+              itemCount: cart.items.length,
+              itemBuilder: (context, index) {
+                final item = cart.items[index];
+                return ListTile(
+                  title: Text(item.name),
+                  subtitle: Text('₹${item.price} x ${item.quantity}'),
+                  trailing:
+                      Text('₹${item.price * item.quantity}'),
+                );
+              },
+            ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16),
+        color: Colors.black87,
+        child: Text(
+          'Total: ₹${cart.totalPrice.toStringAsFixed(0)}',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+}
