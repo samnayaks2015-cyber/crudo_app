@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/cart_service.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   final CartService cart;
   final VoidCallback onCartPressed;
 
@@ -12,49 +12,26 @@ class HomeScreen extends StatefulWidget {
   });
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, dynamic>> products = [
-    {
-      'name': 'Cow Milk',
-      'price': 90.0,
-      'image': 'assets/images/cow_milk.png',
-    },
-    {
-      'name': 'Buffalo Milk',
-      'price': 130.0,
-      'image': 'assets/images/buffalo_milk.png',
-    },
-  ];
-
-  void _addToCart(Map<String, dynamic> product) {
-    widget.cart.addItem(product['name'], product['price']);
-    setState(() {});
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Added to cart')),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xfff5f5f5),
+
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         title: Row(
           children: [
+            // 🔥 OPTIONAL LOGO — put your asset here
             Image.asset(
-              'assets/images/logo.png', // ✅ add your logo here
+              'assets/logo.png',
               height: 32,
-            ),
-            const SizedBox(width: 8),
-            const Text(
-              'CRUDO',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              errorBuilder: (c, e, s) => const Text(
+                "CRUDO",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
               ),
             ),
           ],
@@ -64,20 +41,20 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               IconButton(
                 icon: const Icon(Icons.shopping_cart, color: Colors.black),
-                onPressed: widget.onCartPressed,
+                onPressed: onCartPressed,
               ),
-              if (widget.cart.totalItems > 0)
+              if (cart.totalItems > 0)
                 Positioned(
                   right: 6,
                   top: 6,
                   child: Container(
-                    padding: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(6),
                     decoration: const BoxDecoration(
                       color: Colors.green,
                       shape: BoxShape.circle,
                     ),
                     child: Text(
-                      widget.cart.totalItems.toString(),
+                      cart.totalItems.toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -90,71 +67,94 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
 
-      body: GridView.builder(
+      body: Padding(
         padding: const EdgeInsets.all(16),
-        itemCount: products.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 0.75,
+        child: Row(
+          children: [
+            Expanded(
+              child: _productCard(
+                name: "Cow Milk",
+                price: 90,
+                image: "assets/cow_milk.png",
+                context: context,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _productCard(
+                name: "Buffalo Milk",
+                price: 130,
+                image: "assets/buffalo_milk.png",
+                context: context,
+              ),
+            ),
+          ],
         ),
-        itemBuilder: (context, index) {
-          final product = products[index];
+      ),
+    );
+  }
 
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.15),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+  Widget _productCard({
+    required String name,
+    required double price,
+    required String image,
+    required BuildContext context,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 10,
+            color: Colors.black12,
+          )
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            image,
+            height: 90,
+            errorBuilder: (c, e, s) =>
+                const Icon(Icons.image, size: 80),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Image.asset(product['image']),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  product['name'],
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '₹${product['price']}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () => _addToCart(product),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.purple),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: const Text('Add'),
-                  ),
-                ),
-              ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            "₹${price.toStringAsFixed(1)}",
+            style: const TextStyle(
+              color: Colors.green,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-          );
-        },
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton(
+            onPressed: () {
+              cart.addItem(name, price);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Added to cart")),
+              );
+            },
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.purple),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            child: const Text("Add"),
+          ),
+        ],
       ),
     );
   }
