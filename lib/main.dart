@@ -4,26 +4,25 @@ import 'screens/cart_screen.dart';
 import 'services/cart_service.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const CrudoApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class CrudoApp extends StatefulWidget {
+  const CrudoApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<CrudoApp> createState() => _CrudoAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _CrudoAppState extends State<CrudoApp> {
   final CartService cart = CartService();
-  int selectedIndex = 0;
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
+    final List<Widget> screens = [
       HomeScreen(cart: cart),
       CartScreen(cart: cart),
-      const ProfileScreen(),
     ];
 
     return MaterialApp(
@@ -31,73 +30,31 @@ class _MyAppState extends State<MyApp> {
       title: 'CRUDO',
       theme: ThemeData(
         primarySwatch: Colors.green,
-        fontFamily: 'Roboto',
+        useMaterial3: true,
       ),
       home: Scaffold(
-        body: pages[selectedIndex],
+        body: screens[_selectedIndex],
+
+        // ✅ BOTTOM NAVIGATION BAR (Country Delight style)
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: selectedIndex,
-          selectedItemColor: const Color(0xFF2E7D32),
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green,
           unselectedItemColor: Colors.grey,
-          type: BottomNavigationBarType.fixed,
           onTap: (index) {
             setState(() {
-              selectedIndex = index;
+              _selectedIndex = index;
             });
           },
-          items: [
-            const BottomNavigationBarItem(
+          items: const [
+            BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Stack(
-                children: [
-                  const Icon(Icons.shopping_cart),
-                  if (cart.totalItems > 0)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          cart.totalItems.toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+              icon: Icon(Icons.shopping_cart),
               label: 'Cart',
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Profile Coming Soon',
-          style: TextStyle(fontSize: 18),
         ),
       ),
     );
