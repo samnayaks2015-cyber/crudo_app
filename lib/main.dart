@@ -38,7 +38,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
+    final List<Widget> pages = [
       HomeScreen(
         cart: cart,
         onCartPressed: _openCart,
@@ -61,4 +61,12 @@ class _MainNavigationState extends State<MainNavigation> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+        ],
+      ),
+    );
+  }
+}
