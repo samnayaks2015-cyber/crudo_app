@@ -5,22 +5,36 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-sdk: ">=3.3.0 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
-flutter:
-sdk: flutter
-
-cupertino_icons: ^1.0.8
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_native_splash: ^2.4.0
 
 dev_dependencies:
-flutter_test:
-sdk: flutter
-
-flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
-uses-material-design: true
+  uses-material-design: true
 
-assets:
-- assets/images/
+  assets:
+    - assets/images/cow_milk.png
+    - assets/images/buffalo_milk.png
+    - assets/images/logo.png
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: assets/images/logo.png
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/logo.png
+  android: true
+  ios: false
+  fullscreen: true
