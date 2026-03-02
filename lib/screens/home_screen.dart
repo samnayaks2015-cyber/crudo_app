@@ -16,14 +16,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Map<String, dynamic>> products = [
     {
-      'name': 'Cow Milk',
-      'price': 90.0,
-      'image': 'assets/images/cow_milk.png',
+      "name": "Cow Milk",
+      "price": 90.0,
+      "image": "assets/images/cow_milk.png",
     },
     {
-      'name': 'Buffalo Milk',
-      'price': 130.0,
-      'image': 'assets/images/buffalo_milk.png',
+      "name": "Buffalo Milk",
+      "price": 130.0,
+      "image": "assets/images/buffalo_milk.png",
     },
   ];
 
@@ -33,27 +33,19 @@ class _HomeScreenState extends State<HomeScreen> {
     cart = widget.cart;
   }
 
-  int getQty(String name) {
-    return cart.items[name]?.quantity ?? 0;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff5f6fa),
 
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          "CRUDO",
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text("CRUDO"),
+        backgroundColor: Colors.green,
         actions: [
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_cart, color: Colors.black),
+                icon: const Icon(Icons.shopping_cart),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -68,17 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   right: 6,
                   top: 6,
                   child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(20),
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
                     ),
                     child: Text(
                       cart.totalItems.toString(),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
                       ),
                     ),
                   ),
@@ -88,156 +79,73 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
 
-      body: GridView.builder(
+      body: Padding(
         padding: const EdgeInsets.all(16),
-        itemCount: products.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 0.72,
-        ),
-        itemBuilder: (context, index) {
-          final product = products[index];
-          final qty = getQty(product['name']);
+        child: GridView.builder(
+          itemCount: products.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 0.75,
+          ),
+          itemBuilder: (context, index) {
+            final product = products[index];
 
-          return Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 12,
-                  offset: Offset(0, 5),
-                )
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset(product['image'], height: 90),
-
-                Text(
-                  product['name'],
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                Text(
-                  "₹${product['price']}",
-                  style: const TextStyle(
-                    color: Colors.green,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-
-                qty == 0
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            cart.addItem(
-                              product['name'],
-                              product['price'],
-                            );
-                          });
-                        },
-                        child: const Text("Add"),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove,
-                                  color: Colors.green),
-                              onPressed: () {
-                                setState(() {
-                                  cart.removeItem(product['name']);
-                                });
-                              },
-                            ),
-                            Text(
-                              qty.toString(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            IconButton(
-                              icon:
-                                  const Icon(Icons.add, color: Colors.green),
-                              onPressed: () {
-                                setState(() {
-                                  cart.addItem(
-                                    product['name'],
-                                    product['price'],
-                                  );
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-              ],
-            ),
-          );
-        },
-      ),
-
-      // ✅ BOTTOM BAR (Country Delight feel)
-      bottomNavigationBar: cart.totalItems == 0
-          ? null
-          : Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
+            return Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
                 color: Colors.white,
-                boxShadow: [
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
                   BoxShadow(color: Colors.black12, blurRadius: 10)
                 ],
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  Image.asset(product["image"], height: 90),
+
                   Text(
-                    "${cart.totalItems} items | ₹${cart.totalPrice.toStringAsFixed(0)}",
+                    product["name"],
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
                       fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+
+                  Text(
+                    "₹${product["price"]}",
+                    style: const TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => CartScreen(cart: cart),
-                        ),
-                      ).then((_) => setState(() {}));
+                      setState(() {
+                        cart.addItem(
+                          product["name"],
+                          product["price"],
+                        );
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Added to cart")),
+                      );
                     },
-                    child: const Text("View Cart"),
+                    child: const Text("Add"),
                   ),
                 ],
               ),
-            ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
