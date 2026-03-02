@@ -8,21 +8,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0'
+          flutter-version: 3.19.0
 
-      - name: Create missing platforms
+      - name: Enable platforms (FIX)
+        run: flutter config --enable-android
+
+      - name: Create Flutter project structure
         run: flutter create .
 
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build APK
+      - name: Build release APK
         run: flutter build apk --release
 
       - name: Upload APK
