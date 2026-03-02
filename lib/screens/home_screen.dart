@@ -1,127 +1,128 @@
 import 'package:flutter/material.dart';
 import '../services/cart_service.dart';
-import 'cart_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final CartService cart;
+
+  const HomeScreen({super.key, required this.cart});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CartService cart = CartService();
-
-  void addToCart(String name, double price) {
-    setState(() {
-      cart.addItem(name, price);
-    });
+  Widget productCard({
+    required String name,
+    required String image,
+    required double price,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: const Color(0xffe9e4ec),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 6)
+        ],
+      ),
+      child: Column(
+        children: [
+          Image.asset(image, height: 100),
+          const SizedBox(height: 10),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            "₹${price.toStringAsFixed(0)}",
+            style: const TextStyle(
+              fontSize: 18,
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                widget.cart.addItem(name, price);
+              });
+            },
+            child: const Text("Add"),
+          )
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final cartCount = widget.cart.cartCount;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "CRUDO",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              height: 32,
+            ),
+            const SizedBox(width: 8),
+            const Text(
+              "CRUDO",
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
         ),
         actions: [
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_cart),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const CartScreen(),
-                    ),
-                  ).then((_) => setState(() {}));
-                },
+                icon: const Icon(Icons.shopping_cart, color: Colors.black),
+                onPressed: () {},
               ),
-              if (cart.cartCount > 0)
+              if (cartCount > 0)
                 Positioned(
                   right: 6,
                   top: 6,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
+                  child: CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Colors.red,
                     child: Text(
-                      cart.cartCount.toString(),
+                      cartCount.toString(),
                       style: const TextStyle(
+                        fontSize: 10,
                         color: Colors.white,
-                        fontSize: 12,
                       ),
                     ),
                   ),
                 ),
             ],
-          )
+          ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Expanded(
-              child: milkCard(
-                "Cow Milk",
-                90,
-                "assets/images/cow_milk.png",
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: milkCard(
-                "Buffalo Milk",
-                130,
-                "assets/images/buffalo_milk.png",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget milkCard(String name, double price, String imagePath) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(imagePath, height: 80),
-            const SizedBox(height: 10),
-            Text(
-              name,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              "₹${price.toStringAsFixed(0)}",
-              style: const TextStyle(
-                color: Colors.green,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => addToCart(name, price),
-              child: const Text("Add"),
-            )
-          ],
-        ),
+      body: GridView.count(
+        crossAxisCount: 2,
+        padding: const EdgeInsets.all(12),
+        children: [
+          productCard(
+            name: "Cow Milk",
+            image: "assets/images/cow_milk.png",
+            price: 90,
+          ),
+          productCard(
+            name: "Buffalo Milk",
+            image: "assets/images/buffalo_milk.png",
+            price: 130,
+          ),
+        ],
       ),
     );
   }
