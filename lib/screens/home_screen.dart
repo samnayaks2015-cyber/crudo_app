@@ -16,15 +16,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget productCard(
-      String name, String imagePath, double price) {
+  Widget productCard(String name, String imagePath, double price) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 8,
+            color: Colors.black12,
+            offset: Offset(0, 4),
+          )
+        ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min, // ⭐ IMPORTANT FIX
         children: [
           Image.asset(imagePath, height: 120),
           const SizedBox(height: 10),
@@ -75,10 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Image.asset(
-              'assets/images/logo.png',
-              height: 32,
-            ),
+            Image.asset('assets/images/logo.png', height: 32),
             const SizedBox(width: 8),
             const Text(
               "CRUDO",
@@ -90,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_cart,
-                    color: Colors.black),
+                icon:
+                    const Icon(Icons.shopping_cart, color: Colors.black),
                 onPressed: widget.onCartTap,
               ),
               if (cartCount > 0)
@@ -120,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start, // ⭐ FIX
           children: [
             Expanded(
               child: productCard(
