@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/cart_service.dart';
-import 'cart_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,27 +13,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cartCount = cartService.items.length;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'CRUDO',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              height: 32,
+            ),
+            const SizedBox(width: 8),
+            const Text('CRUDO'),
+          ],
         ),
         actions: [
           Stack(
             children: [
               IconButton(
                 icon: const Icon(Icons.shopping_cart),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const CartScreen(),
-                    ),
-                  ).then((_) => setState(() {}));
-                },
+                onPressed: () {},
               ),
-              if (cartService.cartCount > 0)
+              if (cartCount > 0)
                 Positioned(
                   right: 6,
                   top: 6,
@@ -42,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     radius: 8,
                     backgroundColor: Colors.red,
                     child: Text(
-                      cartService.cartCount.toString(),
+                      '$cartCount',
                       style: const TextStyle(
-                        fontSize: 10,
                         color: Colors.white,
+                        fontSize: 10,
                       ),
                     ),
                   ),
@@ -56,16 +56,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: GridView.count(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
           children: [
-            _milkCard(
-              name: 'Cow Milk',
+            productCard(
+              name: "Cow Milk",
               price: 90,
               image: 'assets/images/cow_milk.png',
             ),
-            const SizedBox(width: 16),
-            _milkCard(
-              name: 'Buffalo Milk',
+            productCard(
+              name: "Buffalo Milk",
               price: 130,
               image: 'assets/images/buffalo_milk.png',
             ),
@@ -75,47 +77,52 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _milkCard({
+  Widget productCard({
     required String name,
     required double price,
     required String image,
   }) {
-    return Expanded(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Image.asset(image, height: 80),
-              const SizedBox(height: 10),
-              Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                '₹$price',
-                style: const TextStyle(
-                  color: Colors.green,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  cartService.addItem(name, price);
-                  setState(() {});
-                },
-                child: const Text('Add'),
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 6,
+            color: Colors.black12,
           ),
-        ),
+        ],
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(image, height: 70),
+          const SizedBox(height: 10),
+          Text(
+            name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '₹$price',
+            style: const TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              cartService.addItem(name, price);
+              setState(() {});
+            },
+            child: const Text("Add"),
+          ),
+        ],
       ),
     );
   }
