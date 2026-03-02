@@ -46,5 +46,14 @@ class _MainNavigationState extends State<MainNavigation> {
 
     return Scaffold(
       body: pages[_selectedIndex],
-
-      bottomNavigationBar:
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.green,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon
