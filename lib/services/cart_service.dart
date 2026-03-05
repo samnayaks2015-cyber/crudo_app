@@ -1,38 +1,17 @@
-import '../models/cart_item.dart';
 import '../models/product.dart';
 
 class CartService {
 
-  static final CartService instance = CartService._internal();
-  CartService._internal();
+  static List<Product> cartItems = [];
 
-  final List<CartItem> items = [];
-
-  void add(Product product){
-
-    final index = items.indexWhere((i) => i.product.name == product.name);
-
-    if(index >= 0){
-      items[index].quantity++;
-    } else {
-      items.add(CartItem(product,1));
-    }
-
+  static void add(Product product){
+    cartItems.add(product);
   }
 
-  void remove(CartItem item){
-    items.remove(item);
+  static void remove(Product product){
+    cartItems.remove(product);
   }
 
-  int get total {
-
-    int t = 0;
-
-    for(var i in items){
-      t += i.product.price * i.quantity;
-    }
-
-    return t;
-  }
+  static int get count => cartItems.length;
 
 }
