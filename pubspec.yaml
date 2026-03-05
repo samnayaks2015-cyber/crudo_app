@@ -1,6 +1,7 @@
-name: crudo_app
-description: CRUDO Milk Delivery App
-publish_to: 'none'
+name: crudo
+description: CRUDO Grocery Delivery App
+
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -12,21 +13,26 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.6
-  firebase_core: ^2.27.0
-  firebase_auth: ^4.17.4
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.20.0
+  carousel_slider: ^4.2.1
+  google_fonts: ^6.2.1
+  provider: ^6.1.2
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^3.0.2
 
 flutter:
-
   uses-material-design: true
 
   assets:
-    - assets/images/logo.png
-    - assets/images/banner1.jpg
-    - assets/images/banner2.jpg
-    - assets/images/banner3.jpg
-    - assets/images/cow_milk.png
-    - assets/images/buffalo_milk.png
+    - assets/logo/logo.png
+    - assets/splash/splash.png
+    - assets/images/banner1.png
+    - assets/images/banner2.png
+    - assets/images/banner3.png
+    - assets/products/cow_milk.png
+    - assets/products/buffalo_milk.png
