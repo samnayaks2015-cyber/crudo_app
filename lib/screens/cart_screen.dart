@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/cart_service.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -12,14 +13,19 @@ class CartScreen extends StatelessWidget {
         title: const Text("My Cart"),
       ),
 
-      body: const Center(
-        child: Text(
-          "Your cart items will appear here",
-          style: TextStyle(fontSize: 18),
-        ),
+      body: CartService.cart.isEmpty
+          ? const Center(
+          child: Text("Cart is empty"))
+          : ListView(
+        children: CartService.cart.entries.map((item){
+
+          return ListTile(
+            title: Text(item.key),
+            trailing: Text("Qty: ${item.value}"),
+          );
+
+        }).toList(),
       ),
-
     );
-
   }
 }
