@@ -1,17 +1,23 @@
-import '../models/product.dart';
-
 class CartService {
 
-  static List<Product> cartItems = [];
+  static Map<String,int> cart = {};
 
-  static void add(Product product){
-    cartItems.add(product);
+  static void addItem(String name){
+
+    if(cart.containsKey(name)){
+      cart[name] = cart[name]! + 1;
+    }else{
+      cart[name] = 1;
+    }
+
   }
 
-  static void remove(Product product){
-    cartItems.remove(product);
-  }
+  static void removeItem(String name){
 
-  static int get count => cartItems.length;
+    if(cart.containsKey(name) && cart[name]! > 0){
+      cart[name] = cart[name]! - 1;
+    }
+
+  }
 
 }
